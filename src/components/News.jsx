@@ -26,7 +26,7 @@ export default function News({news}) {
       <div className='flex '>
         {articleNumber === 3 ? (
           <button 
-          className='w-full py-2 rounded-bl-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+          className='w-full py-2 rounded-b-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
           onClick={() => setArticleNumber(articleNumber + 3)}
           >
             Show More
@@ -34,13 +34,13 @@ export default function News({news}) {
         ) : (
           <>
             <button 
-              className='w-full py-2 rounded-br-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+              className='w-full py-2 rounded-bl-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
               onClick={() => setArticleNumber(3)}
               >
                 Show Less
             </button>
             <button 
-              className='w-full py-2 rounded-bl-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+              className='w-full py-2 rounded-br-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
               onClick={() => setArticleNumber(articleNumber + 3)}
             >
               Show More
