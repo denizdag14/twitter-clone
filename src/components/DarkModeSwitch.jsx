@@ -18,11 +18,11 @@ export default function DarkModeSwitch() {
     <Switch
       checked={currentTheme === "dark"}
       onChange={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-      className="group relative flex h-7 w-14 cursor-pointer rounded-full dark:bg-white/10 p-1 transition-colors bg-gray-200 duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
+      className="group relative flex h-7 w-14 cursor-pointer rounded-full dark:bg-zinc-800 p-1 transition-colors bg-gray-100 duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-white/10"
     >
       <span
         aria-hidden="true"
-        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-yellow-500 ring-0 shadow-lg transition duration-200 ease-in-out ${currentTheme === "dark" ? 'translate-x-7' : 'translate-x-0'}`}
+        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-blue-500 ring-0 shadow-lg transition duration-200 ease-in-out ${currentTheme === "dark" ? 'translate-x-7' : 'translate-x-0'}`}
       />
       {
         currentTheme === "dark" ? 
