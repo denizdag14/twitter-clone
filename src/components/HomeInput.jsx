@@ -61,7 +61,7 @@ export default function HomeInput() {
       }
     );
   };
-  
+
     if(!session) return null;
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
@@ -75,14 +75,14 @@ export default function HomeInput() {
           } */}
           {selectedFile && fileType === "image" && (
             fileUploading ? (
-              <div className="rounded-full border-none w-auto h-auto flex items-center justify-center">
+              <div className="rounded-full border-none w-auto h-auto flex items-center justify-center mb-2">
                 <CircularProgress variant="determinate" value={uploadProgress}/>
               </div>
             ) : (
               <Image
                 src={fileUrl}
                 alt="file"
-                className="w-auto h-auto object-cover cursor-pointer"
+                className="w-auto h-auto object-cover cursor-pointer rounded-md mb-2"
                 width={50}
                 height={50}
               />
@@ -90,14 +90,14 @@ export default function HomeInput() {
           )}
           {selectedFile && fileType === "video" && (
             fileUploading ? (
-              <div className="rounded-full border-none w-auto h-auto flex items-center justify-center">
+              <div className="rounded-full border-none w-auto h-auto flex items-center justify-center mb-2">
                 <CircularProgress variant="determinate" value={uploadProgress}/>
               </div>
             ) : (
               <video
                 src={fileUrl}
                 controls
-                className="w-auto h-auto object-cover cursor-pointer"
+                className="w-auto h-auto object-cover cursor-pointer rounded-md mb-2"
                 width={50}
                 height={50}
               />
