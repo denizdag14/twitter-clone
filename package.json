@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^2.0.4",
+    "@mui/material": "^5.15.20",
     "firebase": "^10.12.2",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
