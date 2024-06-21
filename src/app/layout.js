@@ -1,11 +1,11 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
-import News from "@/components/News";
 import Providers from "./Providers";
 import DarkModeSwitch from "@/components/DarkModeSwitch";
 import SearchBox from "@/components/SearchBox";
 import SessionWrapper from "@/components/SessionWrapper";
+import FetchNews from "@/components/FetchNews";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,12 +13,6 @@ export const metadata = {
   title: "twitter-clone",
   description: "A clone of Twitter built with Next.js",
 };
-
-var news;
-const API_KEY = process.env.API_KEY;
-fetch(`https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${API_KEY}`).then((response) => response.json()).then((data) => {
-  news = data.articles;
-})
 
 export default function RootLayout({ children }) {
   return (
@@ -38,7 +32,7 @@ export default function RootLayout({ children }) {
                     <DarkModeSwitch />
                   </div>
                 </div>
-                <News news={news}/>
+                <FetchNews />
               </div>
             </div>
           </Providers>
