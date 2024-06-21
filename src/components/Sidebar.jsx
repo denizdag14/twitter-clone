@@ -6,6 +6,9 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import SignInOutButton from './SignInOutButton'
+import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
+import { signOut } from 'next-auth/react'
+import DarkModeSwitch from './DarkModeSwitch'
 
 export default function Sidebar() {
   const { data: session, status} = useSession();
@@ -30,7 +33,36 @@ export default function Sidebar() {
               <p className='text-gray-500'>@{session.user.username}</p>
             </div>
             <SignInOutButton session={session} />
-            <HiDotsHorizontal className='h-5 ml-2 hidden md:inline'/>
+            <Popover className='hover:dark:bg-zinc-700 hover:bg-gray-200 rounded-full ml-2 lg:hidden'>
+              <PopoverButton>
+                <HiDotsHorizontal />
+              </PopoverButton>
+              <Transition
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <PopoverPanel
+                  anchor="bottom"
+                  className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm"
+                >
+                  <div className="flex p-3">
+                    <a className="rounded-lg py-2 px-2 transition block lg:hidden">
+                      <p className="font-semibold dark:text-blue-500 text-blue-500"><DarkModeSwitch /></p>
+                    </a>
+
+                    <div className="border-l border-gray-400 mr-2 md:hidden"></div>
+
+                    <a onClick={() => confirm('Are you sure you want to sign out?') === true ? signOut() : null} className="rounded-lg py-3 px-3 transition dark:hover:bg-zinc-900 hover:bg-gray-200 block md:hidden cursor-pointer">
+                      <p className="font-semibold dark:text-blue-500 text-blue-500">Log out</p>
+                    </a>
+                  </div>
+                </PopoverPanel>
+              </Transition>
+            </Popover>
           </div>
         )
       }

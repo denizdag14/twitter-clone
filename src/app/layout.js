@@ -24,9 +24,9 @@ export default function RootLayout({ children }) {
               <div className='border-r dark:border-zinc-800 h-screen'>
                 <Sidebar />
               </div>
-              <div>{children}</div>
+              <div className='w-2xl flex-1'>{children}</div>
               <div className='lg:flex-col p-3 h-screen border-l dark:border-zinc-800 hidden lg:flex w-[24rem]'>
-                <div className='sticky top-0 py-2 flex space-x-2'>
+                <div className='sticky top-0 py-2 flex space-x-2 mb-4'>
                   <SearchBox />
                   <div className='ml-auto self-center'>
                     <DarkModeSwitch />
