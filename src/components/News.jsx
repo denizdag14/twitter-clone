@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function News({news}) {
 
   const [articleNumber, setArticleNumber] = useState(3);
+  const articlesCount = news.length;
 
   return (
     <div className='space-y-3 shadow-md dark:bg-zinc-800 bg-gray-100 rounded-xl pt-2'>
@@ -26,26 +27,37 @@ export default function News({news}) {
       <div className='flex '>
         {articleNumber === 3 ? (
           <button 
-          className='w-full py-2 rounded-b-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
-          onClick={() => setArticleNumber(articleNumber + 3)}
+            className='w-full py-2 rounded-b-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+            onClick={() => setArticleNumber(articleNumber + 3)}
           >
             Show More
         </button>
-        ) : (
+        ) : (articleNumber >= articlesCount) ? (
           <>
             <button 
               className='w-full py-2 rounded-bl-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
               onClick={() => setArticleNumber(3)}
-              >
+            >
                 Show Less
             </button>
-            <button 
-              className='w-full py-2 rounded-br-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
-              onClick={() => setArticleNumber(articleNumber + 3)}
-            >
-              Show More
-            </button>
           </>
+        ) : (
+          (
+            <>
+              <button 
+                className='w-full py-2 rounded-bl-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+                onClick={() => setArticleNumber(3)}
+              >
+                Show Less
+              </button>
+              <button 
+                className='w-full py-2 rounded-br-xl text-blue-400 hover:text-blue-600 dark:hover:bg-zinc-700 hover:bg-gray-200 transition duration-200'
+                onClick={() => setArticleNumber(articleNumber + 3)}
+              >
+                Show More
+              </button>
+            </>
+          )
         )}
         
       </div>

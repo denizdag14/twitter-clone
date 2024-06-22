@@ -6,15 +6,16 @@ import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/re
 
 export default function Post({ post, id }) {
   return (
-    <div className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800">
-        <Image className="h-11 w-11 rounded-full mr-4" src={post?.profileImg} alt="user-img" width={50} height={50} />
+    <div href={`/posts/${id}`} className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800">
+        <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${post?.uid}?username=${post?.username}`}>
+            <Image className="rounded-full" src={post?.profileImg} alt="user-img" width={50} height={50} />
+        </Link>
         <div className="flex-1">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-1 whitespace-nowrap">
-                    <h4 className="font-bold text-sx truncate">{post?.name}</h4>
-                    <span className="text-xs truncate text-gray-500">@{post?.username}</span>
+                    <Link href={`/profile/${post?.uid}?username=${post?.username}`} className="font-bold text-sm truncate hover:underline">{post?.name}</Link>
+                    <Link href={`/profile/${post?.uid}?username=${post?.username}`} className="truncate hover:underline text-xs text-gray-500">@{post?.username}</Link>
                 </div>
-                {/* <HiDotsHorizontal className="text-sm" /> */}
                 <Popover>
                     <PopoverButton className='focus:outline-none'>
                         <HiDotsHorizontal className="text-sm" />
@@ -43,9 +44,7 @@ export default function Post({ post, id }) {
                     </Transition>
                 </Popover>
             </div>
-            <Link href={`/posts/${id}`}>
-                <p className="text-sm my-3">{post?.text}</p>
-            </Link>
+            <p className="text-sm my-3">{post?.text}</p>
             {post?.file !== null ? (
                 <>
                     {post?.fileType === 'image' ? (
@@ -55,7 +54,7 @@ export default function Post({ post, id }) {
                     )}
                 </>
             ) : (null)}
-            <Icons trashIcon={false} />
+            <Icons id={id} />
         </div>
     </div>
   )
