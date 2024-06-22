@@ -22,7 +22,7 @@ export default function Sidebar() {
           <HiHome className='w-7 h-7' />
           <span className='font-bold hidden md:inline'>Home</span>
         </Link>
-        {status === 'loading' ? (null) : session ? null : (<SignInOutButton session={session} />)}
+        {status === 'loading' ? (null) : session ? (null) : (<SignInOutButton session={session} />)}
       </div>
       {
         session && (

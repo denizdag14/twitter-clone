@@ -1,4 +1,5 @@
 import HomeInput from "@/components/HomeInput";
+import Feed from "@/components/Feed";
 
 export default function page() {
   return (
@@ -7,6 +8,7 @@ export default function page() {
         <h2 className='text-lg sm:text-xl font-bold'>Home</h2>
       </div>
       <HomeInput />
+      <Feed />
     </div>
   )
 }

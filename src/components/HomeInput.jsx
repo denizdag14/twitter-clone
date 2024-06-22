@@ -43,15 +43,17 @@ export default function HomeInput() {
       uid: session.user.uid,
       name: session.user.name,
       username: session.user.username,
-      text,
+      text: text,
       profileImg: session.user.image,
       timestamp: serverTimestamp(),
       file: fileUrl,
+      fileType: fileType,
     });
     setPostLoading(false);
     setText('');
     setFileUrl(null);
     setSelectedFile(null);
+    location.reload();
   };
 
   const uploadFileToStorage = () => {
