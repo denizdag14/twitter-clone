@@ -8,16 +8,19 @@ import { useRef, useState, useEffect } from "react";
 import { app } from "../firebase";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgress } from "@mui/material";
+import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
 
 export default function HomeInput() {
-    const { data:session } = useSession();
-
-    const filePickRef = useRef(null);
+  const { data:session } = useSession();
+  const filePickRef = useRef(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileUploading, setFileUploading] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [text, setText] = useState('');
+  const [postLoading, setPostLoading] = useState(false);
+  const db = getFirestore(app);
 
   const addFileToPost = (e) => {
     const file = e.target.files[0];
@@ -33,6 +36,23 @@ export default function HomeInput() {
       uploadFileToStorage();
     }
   }, [selectedFile]);
+
+  const handleSubmit = async () => {
+    setPostLoading(true);
+    const docRef = await addDoc(collection(db, 'posts'), {
+      uid: session.user.uid,
+      name: session.user.name,
+      username: session.user.username,
+      text,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+      file: fileUrl,
+    });
+    setPostLoading(false);
+    setText('');
+    setFileUrl(null);
+    setSelectedFile(null);
+  };
 
   const uploadFileToStorage = () => {
     setFileUploading(true);
@@ -59,6 +79,7 @@ export default function HomeInput() {
           setFileUploading(false);
         });
       }
+
     );
   };
 
@@ -67,12 +88,7 @@ export default function HomeInput() {
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
         <Image src={session.user.image} alt={'/no_image_available.jpg'} width={70} height={70} className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95'/>
         <div className='w-full divide-y divide-gray-200 dark:divide-zinc-800'>
-          <Textarea className='w-full dark:bg-zinc-900 border-none outline-none tracking-wide min-h-12' placeholder='Whats happening' rows='2'></Textarea>
-          {/* {
-            selectedFile && (
-              <Image src={imageFileUrl} alt='image' className='w-auto h-auto object-cover cursor-pointer' width={50} height={50}/>
-            )
-          } */}
+          <Textarea className='w-full dark:bg-zinc-900 border-none outline-none tracking-wide min-h-12' placeholder='Whats happening' rows='2' value={text} onChange={(e) => setText(e.target.value)}></Textarea>
           {selectedFile && fileType === "image" && (
             fileUploading ? (
               <div className="rounded-full border-none w-auto h-auto flex items-center justify-center mb-2">
@@ -106,7 +122,13 @@ export default function HomeInput() {
           <div className='flex items-center justify-between pt-2.5'>
             <HiOutlinePhotograph onClick={() => filePickRef.current.click()} className='h-10 w-10 p-2 text-sky-500 dark:hover:bg-sky-950 hover:bg-sky-100 rounded-full cursor-pointer' />
             <input hidden type='file' ref={filePickRef} accept='image/*,video/*' onChange={addFileToPost}/>
-            <button  className='bg-blue-400 hover:bg-blue-500 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:brightness-100 disabled:opacity-50'>Post</button>
+            <button
+              disabled={text.trim() === '' && !selectedFile || postLoading || fileUploading}
+              className='bg-blue-400 disabled:hover:bg-blue-400 hover:bg-blue-500 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:brightness-100 disabled:opacity-50'
+              onClick={handleSubmit}  
+            >
+              Post
+            </button>
           </div>
         </div>
     </div>
