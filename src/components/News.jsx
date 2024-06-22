@@ -8,7 +8,7 @@ export default function News({news}) {
   const [articleNumber, setArticleNumber] = useState(3);
 
   return (
-    <div className='space-y-3 dark:bg-zinc-800 bg-gray-100 rounded-xl pt-2'>
+    <div className='space-y-3 shadow-md dark:bg-zinc-800 bg-gray-100 rounded-xl pt-2'>
       <h4 className='font-bold text-xl px-4'>Whats happening</h4>
       {news.slice(0, articleNumber).map((article, index) => (
         <div key={index}>

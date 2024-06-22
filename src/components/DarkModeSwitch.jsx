@@ -18,7 +18,7 @@ export default function DarkModeSwitch() {
     <Switch
       checked={currentTheme === "dark"}
       onChange={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-      className="group relative flex h-7 w-14 cursor-pointer rounded-full dark:bg-zinc-800 p-1 transition-colors bg-gray-100 duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10"
+      className="group relative flex h-7 w-14 cursor-pointer rounded-full dark:bg-zinc-800 p-1 transition-colors mr-2 bg-gray-100 duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10"
     >
       <span
         aria-hidden="true"

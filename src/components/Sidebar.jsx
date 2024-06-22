@@ -51,7 +51,7 @@ export default function Sidebar() {
                   className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm lg:hidden"
                 >
                   <div className="flex p-3">
-                    <a className="rounded-lg py-2 px-2 transition block lg:hidden">
+                    <a className="rounded-lg py-2 ml-2 px-2 transition block lg:hidden">
                       <p className="font-semibold dark:text-blue-500 text-blue-500"><DarkModeSwitch /></p>
                     </a>
 
