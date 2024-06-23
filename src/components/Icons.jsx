@@ -63,7 +63,7 @@ export default function Icons({id, uid, isTrash}) {
             if(session?.user?.uid === uid) {
                 deleteDoc(doc(db, 'posts', id )).then(() => {
                     console.log('Document successfully deleted!');
-                    window.location.reload();
+                    window.location = '/';
                 }).catch((error) => {
                     console.error('Error removing post: ', error);
                 });
