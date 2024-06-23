@@ -112,6 +112,7 @@ export default function CommentModal() {
       }
 
       const docRef = await addDoc(collection(db, 'posts', postId, 'comments'), {
+        uid: session.user.uid,
         name: session.user.name,
         username: session.user.username,
         comment: input,

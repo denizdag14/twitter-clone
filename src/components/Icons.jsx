@@ -73,8 +73,6 @@ export default function Icons({id, uid, isTrash}) {
         }
     };
 
-    console.log(comments);
-
   return (
     <>
         {isTrash ? (
