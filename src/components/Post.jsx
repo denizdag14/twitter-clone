@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { HiDotsHorizontal, HiOutlineTrash } from "react-icons/hi"
+import { HiDotsHorizontal } from "react-icons/hi"
 import Link from "next/link"
 import Icons from "./Icons"
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
@@ -17,8 +17,8 @@ export default function Post({ post, id }) {
                     <Link href={`/profile/${post?.uid}?username=${post?.username}`} className="truncate hover:underline text-xs text-gray-500">@{post?.username}</Link>
                 </div>
                 <Popover>
-                    <PopoverButton className='focus:outline-none'>
-                        <HiDotsHorizontal className="text-sm" />
+                    <PopoverButton className='focus:outline-none w-6 h-6 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full flex items-center justify-center'>
+                        <HiDotsHorizontal />
                     </PopoverButton>
                     <Transition
                         enter="transition ease-out duration-200"
@@ -34,10 +34,7 @@ export default function Post({ post, id }) {
                         >
                         <div className="flex p-2">
                             <a className="rounded-lg transition cursor-pointer">
-                                <p className="py-3 px-3 text-gray-500 hover:text-red-500 hover:dark:bg-red-950 hover:bg-red-100 rounded-lg flex items-center space-x-2">
-                                    <HiOutlineTrash  />
-                                    <span>Delete</span>
-                                </p>
+                                <Icons isTrash={true} id={id} uid={post.uid} />
                             </a>
                         </div>
                         </PopoverPanel>
@@ -54,7 +51,7 @@ export default function Post({ post, id }) {
                     )}
                 </>
             ) : (null)}
-            <Icons id={id} />
+            <Icons isTrash={false} id={id} />
         </div>
     </div>
   )
