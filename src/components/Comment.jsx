@@ -3,20 +3,49 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
-import { HiDotsHorizontal, HiOutlineTrash } from "react-icons/hi"
-import { useSession } from "next-auth/react"
+import { HiDotsHorizontal, HiHeart, HiOutlineHeart, HiOutlineTrash } from "react-icons/hi"
+import { useSession, signIn } from "next-auth/react"
 import { app } from "@/firebase"
-import { deleteDoc, doc, getFirestore } from "firebase/firestore"
+import { deleteDoc, doc, getFirestore, onSnapshot, collection, setDoc, serverTimestamp } from "firebase/firestore"
+import { useState, useEffect } from "react"
 
-export default function Comment({comment, id, postId}) {
+export default function Comment({comment, commentId, postId}) {
 
+    const [isLiked, setIsLiked] = useState(false);
+    const [likes, setLikes] = useState([]);
     const db = getFirestore(app);
     const { data: session } = useSession();
+
+    const likePost = async () => {
+
+        if(session){
+            if(isLiked){
+                await deleteDoc(doc(db, 'posts', postId, 'comments', commentId, 'likes', session.user.uid));
+            } else{
+                await setDoc(doc(db, 'posts', postId, 'comments', commentId, 'likes', session.user.uid), {
+                    username: session.user.username,
+                    timestamp: serverTimestamp(),
+                })
+            }
+        } else {
+            signIn();
+        }
+    };
+
+    useEffect(() => {
+        onSnapshot(collection(db, 'posts', postId, 'comments', commentId, 'likes'), (snapshot) => {
+            setLikes(snapshot.docs);
+        })
+    }, [db]);
+
+    useEffect(() => {
+        setIsLiked(likes.findIndex((like) => like.id === session?.user?.uid) !== -1);
+    }, [likes]);
 
     const deleteComment = async () => {
         if(window.confirm('Are you sure you want to delete this comment?')) {
             if(session?.user?.uid === comment.uid) {
-                deleteDoc(doc(db, 'posts', postId, 'comments', id)).then(() => {
+                deleteDoc(doc(db, 'posts', postId, 'comments', commentId)).then(() => {
                     console.log('Document successfully deleted!');
                     window.location.reload();
                 }).catch((error) => {
@@ -91,6 +120,16 @@ export default function Comment({comment, id, postId}) {
                     )}
                 </>
             ) : (null)}
+            <div className="flex items-center mt-2 text-gray-500">
+                {
+                    isLiked ? (
+                        <HiHeart onClick={likePost} className="h-8 w-8 cursor-pointer rounded-full transition duration-500 ease-in-out p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-950"/>
+                    ) : (
+                        <HiOutlineHeart onClick={likePost} className="h-8 w-8 cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100 dark:hover:bg-red-950"/>
+                    )}
+                    {likes.length > 0 && <span className={`text-xs ${isLiked && 'text-red-600'}`}>{likes.length}</span>
+                }
+            </div>
         </div>
     </div>
   )
