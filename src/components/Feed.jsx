@@ -10,6 +10,7 @@ export default async function Feed() {
     querySnapshot.forEach((doc) => {
         data.push({id: doc.id, ...doc.data()});
     });
+
   return (
     <div>
         {data.map((post) => (

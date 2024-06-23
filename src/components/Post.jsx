@@ -5,8 +5,10 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import Link from "next/link";
 import Icons from "./Icons";
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
+import { useSession } from "next-auth/react";
 
 export default function Post({ post, id }) {
+  const { data: session } = useSession();
   const handlePostClick = (e) => {
     if (
       !e.target.closest('a') && 
@@ -17,6 +19,8 @@ export default function Post({ post, id }) {
     }
   };
 
+  if(!session) return null;
+    
   return (
     <div onClick={handlePostClick} className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer">
       <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${post?.uid}?username=${post?.username}`} onClick={(e) => e.stopPropagation()}>
