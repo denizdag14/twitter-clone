@@ -31,14 +31,15 @@ export default function HomeInput() {
     }
   };
 
-  useEffect(() => {
-    if (selectedFile) {
-      uploadFileToStorage();
-    }
-  }, [selectedFile]);
-
   const handleSubmit = async () => {
     setPostLoading(true);
+
+    let uploadedFileUrl = null;
+
+    if (selectedFile) {
+      uploadedFileUrl = await uploadFileToStorage();
+    }
+
     const docRef = await addDoc(collection(db, 'posts'), {
       uid: session.user.uid,
       name: session.user.name,
@@ -46,7 +47,7 @@ export default function HomeInput() {
       text: text,
       profileImg: session.user.image,
       timestamp: serverTimestamp(),
-      file: fileUrl,
+      file: uploadedFileUrl,
       fileType: fileType,
     });
     setPostLoading(false);
@@ -57,32 +58,36 @@ export default function HomeInput() {
   };
 
   const uploadFileToStorage = () => {
-    setFileUploading(true);
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + "-" + selectedFile.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-        console.log("Upload is " + progress + "% done");
-      },
-      (error) => {
-        console.log(error);
-        setFileUploading(false);
-        setFileUrl(null);
-        setSelectedFile(null);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFileUrl(downloadURL);
-          setFileUploading(false);
-        });
-      }
 
-    );
+    return new Promise((resolve, reject) => {
+      setFileUploading(true);
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "-" + selectedFile.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.log(error);
+          setFileUploading(false);
+          setFileUrl(null);
+          setSelectedFile(null);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setFileUrl(downloadURL);
+            setFileUploading(false);
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
   };
 
     if(!session) return null;

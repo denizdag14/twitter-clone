@@ -6,6 +6,7 @@ import DarkModeSwitch from "@/components/DarkModeSwitch";
 import SearchBox from "@/components/SearchBox";
 import SessionWrapper from "@/components/SessionWrapper";
 import FetchNews from "@/components/FetchNews";
+import CommentModal from "@/components/CommentModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
                 <FetchNews />
               </div>
             </div>
+            <CommentModal />
           </Providers>
         </body>
       </html>
