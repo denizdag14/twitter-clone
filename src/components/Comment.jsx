@@ -9,7 +9,7 @@ import { app } from "@/firebase"
 import { deleteDoc, doc, getFirestore, onSnapshot, collection, setDoc, serverTimestamp } from "firebase/firestore"
 import { useState, useEffect } from "react"
 
-export default function Comment({comment, commentId, postId}) {
+export default function Comment({comment, commentId, postId, postOwnerId}) {
 
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState([]);
@@ -44,7 +44,7 @@ export default function Comment({comment, commentId, postId}) {
 
     const deleteComment = async () => {
         if(window.confirm('Are you sure you want to delete this comment?')) {
-            if(session?.user?.uid === comment.uid) {
+            if(session?.user?.uid === comment.uid || session?.user?.uid === postOwnerId) {
                 deleteDoc(doc(db, 'posts', postId, 'comments', commentId)).then(() => {
                     console.log('Document successfully deleted!');
                     window.location.reload();
@@ -85,21 +85,15 @@ export default function Comment({comment, commentId, postId}) {
                         className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm"
                         >
                             {
-                                session?.user?.uid === comment.uid ? (
+                                session?.user?.uid === comment.uid || session?.user?.uid === postOwnerId ? (
                                     <div className="flex p-2">
                                         <a className="rounded-lg transition cursor-pointer">
-                                            {
-                                                session?.user?.uid === comment.uid ? (
-                                                    <div onClick={deleteComment} className="flex items-center space-x-1">
-                                                        <p className="py-3 px-3 text-gray-500 hover:text-red-500 hover:dark:bg-red-950 hover:bg-red-100 rounded-lg flex items-center space-x-2">
-                                                            <HiOutlineTrash />
-                                                            <span className="text-sm hidden lg:inline">Delete the comment</span>
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    null
-                                                )
-                                            }
+                                            <div onClick={deleteComment} className="flex items-center space-x-1">
+                                                <p className="py-3 px-3 text-gray-500 hover:text-red-500 hover:dark:bg-red-950 hover:bg-red-100 rounded-lg flex items-center space-x-2">
+                                                    <HiOutlineTrash />
+                                                    <span className="text-sm hidden lg:inline">Delete the comment</span>
+                                                </p>
+                                            </div>
                                         </a>
                                     </div>
                                 ) : (

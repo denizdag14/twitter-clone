@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { HiOutlineChat } from "react-icons/hi";
 
 
-export default function Comments({id}) {
+export default function Comments({id, postOwnerId}) {
     const db = getFirestore(app);
     const [comments, setComments] = useState([]);
     
@@ -25,7 +25,7 @@ export default function Comments({id}) {
         </div>
         {
             comments.map((comment) => (
-                <Comment key={comment.id} comment={comment.data()} commentId={comment.id} postId={id} />
+                <Comment key={comment.id} comment={comment.data()} commentId={comment.id} postId={id} postOwnerId={postOwnerId} />
             ))
         }
     </div>

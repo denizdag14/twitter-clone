@@ -21,7 +21,7 @@ export default async function PostPage({params}) {
         <h2 className="sm:text-lg">Back</h2>
       </div>
       <ForPostPage post={data} id={data.id}/>
-      <Comments id={params.id} />
+      <Comments id={params.id} postOwnerId={data.uid} />
     </div>
   )
 }
