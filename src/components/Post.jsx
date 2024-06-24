@@ -23,14 +23,14 @@ export default function Post({ post, id }) {
     
   return (
     <div onClick={handlePostClick} className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer">
-      <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${post?.uid}?username=${post?.username}`} onClick={(e) => e.stopPropagation()}>
+      <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${post?.uid}`} onClick={(e) => e.stopPropagation()}>
         <Image className="rounded-full" src={post?.profileImg} alt="user-img" width={50} height={50} />
       </Link>
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1 whitespace-nowrap">
-            <Link href={`/profile/${post?.uid}?username=${post?.username}`} className="font-bold text-sm truncate hover:underline" onClick={(e) => e.stopPropagation()}>{post?.name}</Link>
-            <Link href={`/profile/${post?.uid}?username=${post?.username}`} className="truncate hover:underline text-xs text-gray-500" onClick={(e) => e.stopPropagation()}>@{post?.username}</Link>
+            <Link href={`/profile/${post?.uid}`} className="font-bold text-sm truncate hover:underline" onClick={(e) => e.stopPropagation()}>{post?.name}</Link>
+            <Link href={`/profile/${post?.uid}`} className="truncate hover:underline text-xs text-gray-500" onClick={(e) => e.stopPropagation()}>@{post?.username}</Link>
           </div>
           <Popover>
             <PopoverButton className='focus:outline-none w-6 h-6 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full flex items-center justify-center'>

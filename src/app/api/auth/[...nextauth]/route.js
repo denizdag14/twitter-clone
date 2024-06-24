@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc, serverTimestamp, getDoc } from "firebase/firestore";
 import { app } from "@/firebase";
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -15,13 +15,18 @@ const handler = NextAuth({
     callbacks: {
         async session({session, token}){
             const userRef = doc(db, "users", token.sub);
-            const userDoc = await setDoc(userRef, {
-                image: session.user.image,
-                name: session.user.name,
-                email: session.user.email,
-                username: session.user.email.split('@')[0].toLocaleLowerCase(),
-                uid: token.sub,
-            });
+            const userDoc = await getDoc(userRef);
+            if (!userDoc.exists()) {
+                await setDoc(userRef, {
+                    headerImage: 'https://via.placeholder.com/600x200',
+                    image: session.user.image,
+                    name: session.user.name,
+                    email: session.user.email,
+                    created_time: serverTimestamp(),
+                    username: session.user.email.split('@')[0].toLocaleLowerCase(),
+                    uid: token.sub,
+                });
+            }
             session.user.username = session.user.email.split('@')[0].toLocaleLowerCase();
             session.user.uid = token.sub;
             return session;

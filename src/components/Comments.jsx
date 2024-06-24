@@ -27,7 +27,7 @@ export default function Comments({id, postOwnerId}) {
             comments.length > 0 ? comments.map((comment) => (
                 <Comment key={comment.id} comment={comment.data()} commentId={comment.id} postId={id} postOwnerId={postOwnerId} />
             )) : (
-                <p className="text-gray-500 flex justify-center">There are no comments on this post.</p>
+                <p className="text-gray-500 flex justify-center">There are no comments in this post.</p>
             )
         }
     </div>

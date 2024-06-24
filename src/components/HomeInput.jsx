@@ -4,13 +4,15 @@ import { useSession } from "next-auth/react"
 import Image from "next/image";
 import { Textarea } from '@headlessui/react'
 import { HiOutlinePhotograph } from "react-icons/hi";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { app } from "../firebase";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgress } from "@mui/material";
 import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
 
 export default function HomeInput() {
+  const router = useRouter();
   const { data:session } = useSession();
   const filePickRef = useRef(null);
   const [fileUrl, setFileUrl] = useState(null);
@@ -93,7 +95,8 @@ export default function HomeInput() {
     if(!session) return null;
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
-        <Image src={session.user.image} alt={'/no_image_available.jpg'} width={70} height={70} className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95'/>
+        <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={session.user.image} alt={'/no_image_available.jpg'} width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>
+        
         <div className='w-full divide-y divide-gray-200 dark:divide-zinc-800'>
           <Textarea className='w-full dark:bg-zinc-900 border-none outline-none tracking-wide min-h-12' placeholder='Whats happening' rows='2' value={text} onChange={(e) => setText(e.target.value)}></Textarea>
           {selectedFile && fileType === "image" && (
