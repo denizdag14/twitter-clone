@@ -1,7 +1,7 @@
 "use client"
 
 import { FaTwitter } from 'react-icons/fa'
-import { HiHome, HiDotsHorizontal } from 'react-icons/hi'
+import { HiHome } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'

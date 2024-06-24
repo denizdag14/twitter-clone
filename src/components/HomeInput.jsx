@@ -131,8 +131,8 @@ export default function HomeInput() {
             <input hidden type='file' ref={filePickRef} accept='image/*,video/*' onChange={addFileToPost}/>
             <button
               disabled={text.trim() === '' && !selectedFile || postLoading || fileUploading}
-              className='bg-blue-400 disabled:hover:bg-blue-400 hover:bg-blue-500 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:brightness-100 disabled:opacity-50'
-              onClick={handleSubmit}  
+              className='disabled:bg-blue-400 bg-blue-500 disabled:hover:bg-blue-400 hover:bg-blue-600 text-white disabled:text-white/50 px-4 py-1 rounded-full font-bold disabled:shadow-none shadow-md'
+              onClick={handleSubmit}
             >
               Post
             </button>

@@ -140,8 +140,8 @@ export default function CommentModal() {
               ariaHideApp={false}
               className='max-w-lg w-[90%] absolute top-24 left-[50%] translate-x-[-50%] bg-white dark:bg-zinc-900 rounded-xl shadow-2xl outline-none'
             >
-              <div className='p-4 max-h-[80vh] overflow-y-auto'>
-                <div className='sticky top-0 dark:bg-zinc-800 bg-gray-200 rounded-xl border-b dark:border-zinc-800 border-gray-200 py-2 px-1.5 flex justify-between z-10'>
+              <div className='p-4 max-h-[80vh] overflow-y-auto scrollbar-hide'>
+                <div className='sticky top-0 dark:bg-zinc-800 bg-gray-200 rounded-xl border-b dark:border-zinc-800 border-gray-200 py-2 px-1.5 flex justify-between'>
                   <span className='ml-4'>Leave a comment</span>
                   <HiX className='text-2xl text-gray-700 p-1 dark:hover:bg-zinc-800 hover:bg-gray-200 rounded-full cursor-pointer' onClick={() => setOpen(false)}/>
                 </div>
