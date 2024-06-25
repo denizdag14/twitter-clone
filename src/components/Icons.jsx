@@ -21,9 +21,13 @@ export default function Icons({id, uid, isTrash}) {
         if(session){
             if(isLiked){
                 await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+                await deleteDoc(doc(db, 'users', session.user.uid, 'likes', id));
             } else{
                 await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
                     username: session.user.username,
+                    timestamp: serverTimestamp(),
+                })
+                await setDoc(doc(db, 'users', session.user.uid, 'likes', id), {
                     timestamp: serverTimestamp(),
                 })
             }

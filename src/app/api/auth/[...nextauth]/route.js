@@ -18,7 +18,7 @@ const handler = NextAuth({
             const userDoc = await getDoc(userRef);
             if (!userDoc.exists()) {
                 await setDoc(userRef, {
-                    headerImage: 'https://via.placeholder.com/600x200',
+                    headerImage: 'https://fakeimg.pl/600x200/1da1f2/ffffff?text=twitter+clone',
                     image: session.user.image,
                     name: session.user.name,
                     email: session.user.email,

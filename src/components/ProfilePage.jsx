@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { getFirestore, doc, getDoc, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, onSnapshot, query, collection, orderBy } from 'firebase/firestore';
+import { modalState } from '@/atom/modalAtom'
+import { useRecoilState } from 'recoil'
 import { app } from '@/firebase';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -14,6 +16,9 @@ const db = getFirestore(app);
 
 export default function ProfilePage({posts}) {
   const [userData, setUserData] = useState(null);
+  const [pagePostOrLike, setPagePostOrLike] = useState('post'); 
+  const [likes, setLikes] = useState([]);
+  const [open] = useRecoilState(modalState);
   const pathname = usePathname();
   const uid = pathname.split('/')[pathname.split('/').length - 1]
 
@@ -33,6 +38,7 @@ export default function ProfilePage({posts}) {
         } else {
           console.log('Kullanıcı bulunamadı.');
         }
+
       } catch (error) {
         console.error('Firestore\'dan veri getirme hatası:', error);
       }
@@ -41,13 +47,22 @@ export default function ProfilePage({posts}) {
     if (uid) {
       fetchUserData();
     }
-  }, [uid]);
+  }, [db, uid]);
 
+  useEffect(() => {
+    onSnapshot(query(collection(db, 'users', uid, 'likes'), orderBy('timestamp', 'desc')), (snapshot) => {
+        setLikes(snapshot.docs);
+    });
+  }, [db, uid])
+
+  const likedPostIds = likes.map(like => like.id);
+  const likedPosts = posts.filter(post => likedPostIds.includes(post.id));
+  
   return (
     <div>
       {userData ? (
-        <div className="max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen">
-        <div className='py-2 px-3 flex justify-between items-center sticky top-0 dark:bg-zinc-900/70 bg-white/70 border-b dark:border-zinc-800 border-gray-200 backdrop-filter backdrop-blur-sm'>
+      <div className="max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen">
+        <div className={`py-2 px-3 flex justify-between items-center sticky top-0 dark:bg-zinc-900/70 bg-white/70 border-b dark:border-zinc-800 border-gray-200 backdrop-filter backdrop-blur-sm ${open ? 'z-0' : 'z-10'}`}>
           <div className="flex items-center">
             <Link href={'/'} className="hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full p-2" >
               <HiArrowLeft className="h-5 w-5" />
@@ -67,7 +82,7 @@ export default function ProfilePage({posts}) {
                 alt="Header Image" 
                 width={600} 
                 height={200} 
-                className="object-cover w-full h-40" 
+                className="object-cover w-full h-40 sm:h-60"
               />
               <div className='absolute -mb-3 flex items-center -bottom-8 left-4'>
                 <Image 
@@ -98,17 +113,33 @@ export default function ProfilePage({posts}) {
         <div className='border-t dark:border-zinc-800'>
           <div className='flex justify-between border-b dark:border-zinc-800 bg-white dark:bg-zinc-900 h-10'>
             <div className='flex-1 text-center w-full h-full'>
-              <button className='w-full h-full hover:dark:bg-zinc-800 hover:bg-gray-200'>Posts</button>
+              <button onClick={() => setPagePostOrLike('post')} className='w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200'>
+                Posts
+                <span className='text-sm ml-2'>{posts.length}</span>
+              </button>
             </div>
             <div className='flex-1 text-center'>
-              <button className='w-full h-full hover:dark:bg-zinc-800 hover:bg-gray-200'>Likes</button>
+              <button onClick={() => setPagePostOrLike('like')}  className='w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200'>
+                Likes 
+                <span className='text-sm ml-2'>{likes.length}</span>
+              </button>
             </div>
           </div>
-          {posts.map((post) => (
-              post.uid === uid && (
-                <Post key={post.id} post={post} id={post.id} />
-              )
-          ))}
+          {
+            pagePostOrLike === 'post' ? (
+              posts.map((post) => (
+                post.uid === uid && (
+                  <Post key={post.id} post={post} id={post.id} />
+                )
+              ))
+            ) : (
+              likedPosts.map((post) => (
+                (
+                  <Post key={post.id} post={post} id={post.id} />
+                )
+              ))
+            )
+          }
         </div>
       </div>
       ) : (
