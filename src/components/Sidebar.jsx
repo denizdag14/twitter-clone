@@ -47,15 +47,6 @@ export default function Sidebar() {
             </>
           )
         }
-        {
-          session && 
-          (session.user.username === 'denzdag9' || session.user.username === 'sudemiir9') && (
-            <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
-              <HiChatAlt className='w-7 h-7' />
-              <span className='font-bold hidden md:inline'>Messages</span>
-            </Link> 
-          )
-        }
         {status === 'loading' ? (null) : session ? (null) : (<SignInOutButton session={session} />)}
       </div>
       {
