@@ -104,12 +104,16 @@ export default function Icons({id, uid, isTrash}) {
     <>
         {isTrash ? (
             <div>
-                <div onClick={deletePost} className="flex rounded-lg transition cursor-pointer items-center space-x-1 mb-1">
-                    <p className="py-3 px-3 text-gray-500 hover:text-red-500 hover:dark:bg-red-950 hover:bg-red-100 rounded-lg flex items-center space-x-2 w-full">
-                        <HiOutlineTrash />
-                        <span className="text-sm hidden lg:inline">Delete the post</span>
-                    </p>
-                </div>
+                {
+                    session?.user?.uid === uid && (
+                        <div onClick={deletePost} className="flex rounded-lg transition cursor-pointer items-center space-x-1 mb-1">
+                            <p className="py-3 px-3 text-gray-500 hover:text-red-500 hover:dark:bg-red-950 hover:bg-red-100 rounded-lg flex items-center space-x-2 w-full">
+                                <HiOutlineTrash />
+                                <span className="text-sm hidden lg:inline">Delete the post</span>
+                            </p>
+                        </div>
+                    )
+                }
                 {
                     isSaved ? (
                         <a onClick={savePost} className="flex rounded-lg transition cursor-pointer items-center space-x-1">

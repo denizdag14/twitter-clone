@@ -30,7 +30,7 @@ export default function ForPostPage({ post, id }) {
                     >
                         <PopoverPanel
                         anchor="top"
-                        className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm"
+                        className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm z-20"
                         >
                         <div className="flex p-2">
                             <a className="rounded-lg transition cursor-pointer">

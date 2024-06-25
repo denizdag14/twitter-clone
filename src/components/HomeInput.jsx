@@ -10,6 +10,7 @@ import { app } from "../firebase";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgress } from "@mui/material";
 import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
+import SignInOutButton from "./SignInOutButton";
 
 export default function HomeInput() {
   const router = useRouter();
@@ -92,7 +93,13 @@ export default function HomeInput() {
     });
   };
 
-    if(!session) return null;
+    if(!session) return (
+      <div className="flex justify-center gap-4 p-4 items-center">
+        <p>Log in to write a post</p>
+        <SignInOutButton session={session} />
+      </div>
+    );
+    // if(!session) return null;
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
         <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={session.user.image} alt={'/no_image_available.jpg'} width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>

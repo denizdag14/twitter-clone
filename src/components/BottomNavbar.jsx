@@ -20,9 +20,9 @@ export default function BottomNavbar() {
           <HiHome className='w-7 h-7' />
         </Link>
         <Link href={`/profile/${session.user.uid}`} className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
-          <HiUser className='w-5 h-5' />
+          <HiUser className='w-7 h-7' />
         </Link>
-        <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
+        <Link href='/savedposts' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
           <HiArchive className='w-7 h-7' />
         </Link>
         <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>

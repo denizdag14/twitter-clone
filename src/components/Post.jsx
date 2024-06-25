@@ -18,8 +18,6 @@ export default function Post({ post, id }) {
       window.location.href = `/posts/${id}`;
     }
   };
-
-  if(!session) return null;
     
   return (
     <div onClick={handlePostClick} className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer">

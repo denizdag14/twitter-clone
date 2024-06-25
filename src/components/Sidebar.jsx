@@ -3,7 +3,7 @@
 import { FaTwitter } from 'react-icons/fa'
 import { HiHome, HiArchive, HiUser, HiChatAlt } from 'react-icons/hi'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import SignInOutButton from './SignInOutButton'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
@@ -12,7 +12,6 @@ import DarkModeSwitch from './DarkModeSwitch'
 
 export default function Sidebar() {
   const { data: session, status} = useSession();
-  if(!session) return null;
   return (
     <div className='flex flex-col p-3 justify-between h-screen'>
       <div className='flex flex-col gap-4'>
@@ -23,18 +22,40 @@ export default function Sidebar() {
           <HiHome className='w-7 h-7' />
           <span className='font-bold hidden md:inline'>Home</span>
         </Link>
-        <Link href={`/profile/${session.user.uid}`} className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
-          <HiUser className='w-7 h-7' />
-          <span className='font-bold hidden md:inline'>Profile</span>
-        </Link>
-        <Link href='/savedposts' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
-          <HiArchive className='w-7 h-7' />
-          <span className='font-bold hidden md:inline'>Saved Posts</span>
-        </Link>
-        <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
-          <HiChatAlt className='w-7 h-7' />
-          <span className='font-bold hidden md:inline'>Messages</span>
-        </Link>
+        {
+          session ? (
+            <>
+              <Link href={`/profile/${session.user.uid}`} className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+                <HiUser className='w-7 h-7' />
+                <span className='font-bold hidden md:inline'>Profile</span>
+              </Link>
+              <Link href='/savedposts' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+                <HiArchive className='w-7 h-7' />
+                <span className='font-bold hidden md:inline'>Saved Posts</span>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href='' onClick={signIn} className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+                <HiUser className='w-7 h-7' />
+                <span className='font-bold hidden md:inline'>Profile</span>
+              </Link>
+              <Link href='' onClick={signIn} className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+                <HiArchive className='w-7 h-7' />
+                <span className='font-bold hidden md:inline'>Saved Posts</span>
+              </Link>
+            </>
+          )
+        }
+        {
+          session && 
+          (session.user.username === 'denzdag9' || session.user.username === 'sudemiir9') && (
+            <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+              <HiChatAlt className='w-7 h-7' />
+              <span className='font-bold hidden md:inline'>Messages</span>
+            </Link> 
+          )
+        }
         {status === 'loading' ? (null) : session ? (null) : (<SignInOutButton session={session} />)}
       </div>
       {
