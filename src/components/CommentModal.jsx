@@ -141,13 +141,13 @@ export default function CommentModal() {
               className='max-w-lg w-[90%] absolute top-24 left-[50%] translate-x-[-50%] bg-white dark:bg-zinc-900 rounded-xl shadow-2xl outline-none'
             >
               <div className='p-4 max-h-[80vh] overflow-y-auto scrollbar-hide'>
-                <div className='sticky top-0 dark:bg-zinc-800 bg-gray-200 rounded-xl border-b dark:border-zinc-800 border-gray-200 py-2 px-1.5 flex justify-between'>
+                <div className='sticky top-0 dark:bg-zinc-800 bg-gray-200 rounded-xl border-b dark:border-zinc-800 border-gray-200 py-2 px-1.5 flex justify-between z-[1]'>
                   <span className='ml-4'>Leave a comment</span>
                   <HiX className='text-2xl text-gray-700 p-1 dark:hover:bg-zinc-800 hover:bg-gray-200 rounded-full cursor-pointer' onClick={() => setOpen(false)}/>
                 </div>
                 <div className='p-2 flex items-center space-x-1 relative'>
                   <span className='w-0.5 h-full z-[-1] absolute left-8 top-11 dark:bg-zinc-800 bg-gray-200' />
-                  <Link href={`/profile/${post?.uid}`}><Image className='rounded-full h-11 w-11 mr-4' src={post?.profileImg} alt='user-img' width={50} height={50} /></Link>
+                  <Image className='rounded-full h-11 w-11 mr-4' src={post?.profileImg} alt='user-img' width={50} height={50} />
                   <h4 className='font-bold text-[15px] sm:text-[16px] hover:underline truncate'>{post?.name}</h4>
                   <span className='text-sm sm:text-[15px] truncate text-gray-500 hover:underline'>@{post?.username}</span>
                 </div>
@@ -166,7 +166,7 @@ export default function CommentModal() {
                   }
                 </p>
                 <div className='flex p-3 space-x-3'>
-                  <Image src={session.user.image} alt='user-img' className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95' width={50} height={50} />
+                  <Image src={session.user.image} alt='user-img' className='h-11 w-11 rounded-full' width={50} height={50} />
                   <div className='w-full divide-y dark:divide-zinc-800 divide-gray-200'>
                     <div className='w-full'>
                       <Textarea className='w-full border-none outline-none tracking-wide min-h-12 dark:bg-zinc-900 placeholder:text-gray-500' placeholder='Whats happening' rows='2' value={input} onChange={(e) => setInput(e.target.value)}>

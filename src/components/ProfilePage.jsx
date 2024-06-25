@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { getFirestore, doc, getDoc, onSnapshot, query, collection, orderBy } from 'firebase/firestore';
-import { modalState } from '@/atom/modalAtom'
-import { useRecoilState } from 'recoil'
 import { app } from '@/firebase';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
-import { HiArrowLeft, HiOutlineCalendar } from 'react-icons/hi';
-import { FaTwitter } from 'react-icons/fa';
+import { HiOutlineCalendar } from 'react-icons/hi';
 import Post from './Post';
+import TopNavbar from './TopNavbar';
 
 const db = getFirestore(app);
 
@@ -18,7 +15,6 @@ export default function ProfilePage({posts}) {
   const [userData, setUserData] = useState(null);
   const [pagePostOrLike, setPagePostOrLike] = useState('post'); 
   const [likes, setLikes] = useState([]);
-  const [open] = useRecoilState(modalState);
   const pathname = usePathname();
   const uid = pathname.split('/')[pathname.split('/').length - 1]
 
@@ -57,22 +53,19 @@ export default function ProfilePage({posts}) {
 
   const likedPostIds = likes.map(like => like.id);
   const likedPosts = posts.filter(post => likedPostIds.includes(post.id));
+
+  let postCount = 0;
+  posts.map((post) => (
+    post.uid === uid && (
+      postCount += 1
+    )
+  ))
   
   return (
     <div>
       {userData ? (
       <div className="max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen">
-        <div className={`py-2 px-3 flex justify-between items-center sticky top-0 dark:bg-zinc-900/70 bg-white/70 border-b dark:border-zinc-800 border-gray-200 backdrop-filter backdrop-blur-sm ${open ? 'z-0' : 'z-10'}`}>
-          <div className="flex items-center">
-            <Link href={'/'} className="hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full p-2" >
-              <HiArrowLeft className="h-5 w-5" />
-            </Link>
-            <h2 className="sm:text-lg">Back</h2>
-          </div>
-          <div className='items-center p-2 gap-2 w-12 h-12 flex sm:hidden'>
-            <FaTwitter className='w-10 h-10 text-blue-500' />
-          </div>
-        </div>
+        <TopNavbar title={userData.name} />
         <div className='flex flex-col border-b border-gray-200 dark:border-zinc-800 space-y-3 w-full'>
           <div className="flex w-full items-end">
             <div className="relative w-full">
@@ -113,15 +106,13 @@ export default function ProfilePage({posts}) {
         <div className='border-t dark:border-zinc-800'>
           <div className='flex justify-between border-b dark:border-zinc-800 bg-white dark:bg-zinc-900 h-10'>
             <div className='flex-1 text-center w-full h-full'>
-              <button onClick={() => setPagePostOrLike('post')} className='w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200'>
-                Posts
-                <span className='text-sm ml-2'>{posts.length}</span>
+              <button onClick={() => setPagePostOrLike('post')} className={`w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200 ${pagePostOrLike === 'post' && 'underline-offset-4 underline text-blue-400'}`}>
+                <span className='text-sm'>Posts {postCount}</span>
               </button>
             </div>
             <div className='flex-1 text-center'>
-              <button onClick={() => setPagePostOrLike('like')}  className='w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200'>
-                Likes 
-                <span className='text-sm ml-2'>{likes.length}</span>
+              <button onClick={() => setPagePostOrLike('like')}  className={`w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200 ${pagePostOrLike === 'like' && 'underline-offset-4 underline text-blue-400'}`}>
+                <span className='text-sm'>Likes {likes.length}</span>
               </button>
             </div>
           </div>

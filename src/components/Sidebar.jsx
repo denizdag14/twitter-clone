@@ -1,7 +1,7 @@
 "use client"
 
 import { FaTwitter } from 'react-icons/fa'
-import { HiHome } from 'react-icons/hi'
+import { HiHome, HiArchive, HiUser, HiChatAlt } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -12,15 +12,28 @@ import DarkModeSwitch from './DarkModeSwitch'
 
 export default function Sidebar() {
   const { data: session, status} = useSession();
+  if(!session) return null;
   return (
     <div className='flex flex-col p-3 justify-between h-screen'>
       <div className='flex flex-col gap-4'>
-        <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 mb-3 w-14 md:w-20 lg:w-fit'>
+        <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 mb-3 w-14 md:w-20 lg:w-fit'>
           <FaTwitter className='w-10 h-10 text-blue-500' />
         </Link>
-        <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 mb-3 w-fit'>
+        <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
           <HiHome className='w-7 h-7' />
           <span className='font-bold hidden md:inline'>Home</span>
+        </Link>
+        <Link href={`/profile/${session.user.uid}`} className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+          <HiUser className='w-7 h-7' />
+          <span className='font-bold hidden md:inline'>Profile</span>
+        </Link>
+        <Link href='/savedposts' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+          <HiArchive className='w-7 h-7' />
+          <span className='font-bold hidden md:inline'>Saved Posts</span>
+        </Link>
+        <Link href='/' className='flex items-center p-2 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-fit'>
+          <HiChatAlt className='w-7 h-7' />
+          <span className='font-bold hidden md:inline'>Messages</span>
         </Link>
         {status === 'loading' ? (null) : session ? (null) : (<SignInOutButton session={session} />)}
       </div>

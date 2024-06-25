@@ -4,7 +4,7 @@ import Link from "next/link"
 import Icons from "./Icons"
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 
-export default function Post({ post, id }) {
+export default function ForPostPage({ post, id }) {
   return (
     <div className="flex p-3 border-b border-gray-200 dark:border-zinc-700">
         <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${post?.uid}?username=${post?.username}`}>
@@ -51,7 +51,7 @@ export default function Post({ post, id }) {
                     )}
                 </>
             ) : (null)}
-            <Icons isTrash={false} id={id} />
+            <Icons isTrash={false} id={id} uid={post.uid}/>
         </div>
     </div>
   )

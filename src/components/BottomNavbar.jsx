@@ -1,7 +1,7 @@
 "use client"
 
-import { FaTwitter, FaSignOutAlt } from 'react-icons/fa'
-import { HiHome } from 'react-icons/hi'
+import { FaSignOutAlt } from 'react-icons/fa'
+import { HiArchive, HiChat, HiHome, HiUser } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -12,11 +12,21 @@ import DarkModeSwitch from './DarkModeSwitch'
 
 export default function BottomNavbar() {
     const { data: session, status} = useSession();
+    if(!session) return null;
   return (
     <div className='flex items-center justify-between h-12'>
-      <div className='flex items-center space-x-2'>
+      <div className='flex items-center justify-between space-x-10'>
         <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
           <HiHome className='w-7 h-7' />
+        </Link>
+        <Link href={`/profile/${session.user.uid}`} className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
+          <HiUser className='w-5 h-5' />
+        </Link>
+        <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
+          <HiArchive className='w-7 h-7' />
+        </Link>
+        <Link href='/' className='flex items-center p-3 hover:dark:bg-zinc-800 hover:bg-gray-100 hover:rounded-full transition-all duration-200 gap-2 w-12 h-12'>
+          <HiChat className='w-7 h-7' />
         </Link>
         {status === 'loading' ? (null) : session ? (null) : (<SignInOutButton session={session} />)}
       </div>

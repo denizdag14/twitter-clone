@@ -49,9 +49,7 @@ export default function Post({ post, id }) {
                 className="rounded-xl dark:bg-neutral-950 bg-gray-100 text-sm"
               >
                 <div className="flex p-2">
-                  <a className="rounded-lg transition cursor-pointer">
-                    <Icons isTrash={true} id={id} uid={post.uid} />
-                  </a>
+                  <Icons isTrash={true} id={id} uid={post.uid} />
                 </div>
               </PopoverPanel>
             </Transition>
