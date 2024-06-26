@@ -99,7 +99,6 @@ export default function HomeInput() {
         <SignInOutButton session={session} />
       </div>
     );
-    // if(!session) return null;
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
         <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={session.user.image} alt={'/no_image_available.jpg'} width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>

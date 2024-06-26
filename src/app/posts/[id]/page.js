@@ -13,7 +13,7 @@ export default async function PostPage({params}) {
 
   return (
     <div className="max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen">
-      <TopNavbar />
+      <TopNavbar title={'Post'} />
       <ForPostPage post={data} id={data.id}/>
       <Comments id={params.id} postOwnerId={data.uid} />
     </div>
