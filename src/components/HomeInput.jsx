@@ -113,7 +113,7 @@ export default function HomeInput() {
     );
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
-        <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={userInfo?.image} alt='user-img' width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>
+        <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={userInfo?.image} alt='user-img' width={50} height={50} className='rounded-full object-cover w-11 h-11 cursor-pointer'/>
         
         <div className='w-full divide-y divide-gray-200 dark:divide-zinc-800'>
           <Textarea className='w-full dark:bg-zinc-900 border-none outline-none tracking-wide min-h-12' placeholder='Whats happening' rows='2' value={text} onChange={(e) => setText(e.target.value)}></Textarea>

@@ -76,7 +76,7 @@ export default function Comment({comment, commentId, postId, postOwnerId}) {
   return (
     <div className="flex p-3 border-b border-gray-200 dark:border-zinc-700 pl-10">
         <Link className="h-9 w-9 rounded-full mr-2" href={`/profile/${comment?.uid}?username=${userInfo?.username}`}>
-            <Image className="rounded-full" src={userInfo?.image} alt="user-img" width={50} height={50} />
+            <Image className="rounded-full object-cover" src={userInfo?.image} alt="user-img" width={50} height={50} />
         </Link>
         <div className="flex-1">
             <div className="flex items-center justify-between">

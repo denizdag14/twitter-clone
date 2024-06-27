@@ -30,7 +30,7 @@ export default function ForPostPage({ post, id }) {
   return (
     <div className="flex p-3 border-b border-gray-200 dark:border-zinc-700">
         <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${userInfo?.uid}?username=${userInfo?.username}`}>
-            <Image className="rounded-full" src={userInfo?.image} alt="user-img" width={50} height={50} />
+            <Image className="rounded-full object-cover w-11 h-11" src={userInfo?.image} alt="user-img" width={50} height={50} />
         </Link>
         <div className="flex-1">
             <div className="flex items-center justify-between">

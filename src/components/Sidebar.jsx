@@ -76,7 +76,7 @@ export default function Sidebar() {
           <Popover>
               <PopoverButton className='focus:outline-none'>
               <div className='text-sm flex items-center cursor-pointer p-2 border dark:border-zinc-800 rounded-full justify-between hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all duration-200'>
-                <Image className='rounded-full h-10 w-10 md:mr-2 lg:mr-3' src={userInfo?.image} alt='user-img' width={50} height={50} />
+                <Image className='rounded-full object-cover h-10 w-10 md:mr-2 lg:mr-3' src={userInfo?.image} alt='user-img' width={50} height={50} />
                 <div className='hidden md:inline md:mr-2 lg:mr-3'>
                   <h4 className='font-bold'>{userInfo?.name}</h4>
                   <p className='text-gray-500'>@{userInfo?.username}</p>

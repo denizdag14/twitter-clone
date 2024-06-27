@@ -196,11 +196,18 @@ export default function ProfilePage({ posts }) {
     }
   };
 
+  useEffect(() => {
+    if (isEditing) {
+      document.body.style.overflow = 'hidden';
+    } else document.body.style.overflow = 'scroll';
+    return () => {};
+  }, [isEditing])
+
   if(!session) return null;
   return (
     <div>
       {userData && !uploading ? (
-        <div className="max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen">
+        <div className={`max-w-xl mx-auto border-r border-l dark:border-zinc-800 min-h-screen`}>
           <TopNavbar title={userData.name} isOpen={isEditing} />
           <div className='flex flex-col border-b border-gray-200 dark:border-zinc-800 space-y-3 w-full'>
             <div className="flex w-full items-end">
@@ -213,13 +220,13 @@ export default function ProfilePage({ posts }) {
                   height={200}
                   className="object-cover w-full h-40 sm:h-60"
                 />
-                <div className='absolute -mb-3 flex items-center -bottom-8 left-4'>
+                <div className='absolute h-24 w-24 -mb-3 flex items-center -bottom-8 left-4'>
                   <Image
                     src={userData.image}
                     alt="Profile Image"
                     width={50}
                     height={50}
-                    className='rounded-full border-2 h-24 w-24 dark:border-zinc-900 border-white'
+                    className='rounded-full object-cover border-2 h-24 w-24 dark:border-zinc-900 border-white'
                   />
                 </div>
               </div>
@@ -299,7 +306,7 @@ export default function ProfilePage({ posts }) {
                           alt="Profile Image"
                           width={50}
                           height={50}
-                          className='rounded-full border-2 h-24 w-24 dark:border-zinc-900 border-white'
+                          className='rounded-full object-cover border-2 h-24 w-24 dark:border-zinc-900 border-white'
                         />
                         <div className="absolute inset-0 flex justify-center items-center">
                           {

@@ -43,7 +43,7 @@ export default function Post({ post, id }) {
   return (
     <div onClick={handlePostClick} className="flex p-3 border-b border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer">
       <Link className="h-11 w-11 rounded-full mr-2" href={`/profile/${userInfo?.uid}`} onClick={(e) => e.stopPropagation()}>
-        <Image className="rounded-full" src={userInfo?.image} alt="user-img" width={50} height={50} />
+        <Image className="rounded-full object-cover w-11 h-11" src={userInfo?.image} alt="user-img" width={50} height={50} />
       </Link>
       <div className="flex-1">
         <div className="flex items-center justify-between">
