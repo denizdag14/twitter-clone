@@ -402,7 +402,7 @@ export default function ProfilePage({ posts }) {
                   </div>
                   <div className='flex-1 text-center'>
                     <button onClick={() => setPagePostOrLike('like')} className={`w-full h-full hover:dark:bg-zinc-800 hover:text-blue-400 hover:bg-gray-200 ${pagePostOrLike === 'like' && 'underline-offset-4 underline text-blue-400'}`}>
-                      <span className='text-sm'>Likes {likes.length}</span>
+                      <span className='text-sm'>Likes {likedPosts.length}</span>
                     </button>
                   </div>
                 </div>
