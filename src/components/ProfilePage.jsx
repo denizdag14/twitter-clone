@@ -12,7 +12,7 @@ import TopNavbar from './TopNavbar';
 import { useSession } from 'next-auth/react';
 import Modal from 'react-modal';
 import { MdOutlineAddPhotoAlternate, MdOutlineCheck } from 'react-icons/md';
-import { Description, Field, Input, Label, Textarea } from '@headlessui/react';
+import { Field, Input, Label, Textarea } from '@headlessui/react';
 import { CircularProgress } from '@mui/material';
 
 const db = getFirestore(app);
@@ -188,7 +188,6 @@ export default function ProfilePage({ posts }) {
       setEditedHeaderImage(null);
       setEditedProfileImage(null);
       update();
-      // window.location.reload();
     } catch (error) {
       console.error('Profil güncelleme hatası:', error);
     } finally {
@@ -199,7 +198,10 @@ export default function ProfilePage({ posts }) {
   useEffect(() => {
     if (isEditing) {
       document.body.style.overflow = 'hidden';
-    } else document.body.style.overflow = 'scroll';
+    } else {
+      document.body.style.overflowX = 'hidden';
+      document.body.style.overflowY = 'auto';
+    }
     return () => {};
   }, [isEditing])
 
