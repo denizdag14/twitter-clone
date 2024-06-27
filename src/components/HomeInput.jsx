@@ -4,17 +4,17 @@ import { useSession } from "next-auth/react"
 import Image from "next/image";
 import { Textarea } from '@headlessui/react'
 import { HiOutlinePhotograph } from "react-icons/hi";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "../firebase";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgress } from "@mui/material";
-import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, getFirestore, serverTimestamp, getDoc, doc } from 'firebase/firestore';
 import SignInOutButton from "./SignInOutButton";
 
 export default function HomeInput() {
   const router = useRouter();
-  const { data:session } = useSession();
+  const { data:session, status } = useSession();
   const filePickRef = useRef(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -23,6 +23,7 @@ export default function HomeInput() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [text, setText] = useState('');
   const [postLoading, setPostLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
   const db = getFirestore(app);
 
   const addFileToPost = (e) => {
@@ -33,6 +34,19 @@ export default function HomeInput() {
       setFileUrl(URL.createObjectURL(file));
     }
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (session?.user?.uid) {
+        const userDoc = await getDoc(doc(db, "users", session?.user?.uid));
+        if (userDoc.exists()) {
+          setUserInfo(userDoc.data());
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [session?.user?.uid]);
 
   const handleSubmit = async () => {
     setPostLoading(true);
@@ -45,10 +59,7 @@ export default function HomeInput() {
 
     const docRef = await addDoc(collection(db, 'posts'), {
       uid: session.user.uid,
-      name: session.user.name,
-      username: session.user.username,
       text: text,
-      profileImg: session.user.image,
       timestamp: serverTimestamp(),
       file: uploadedFileUrl,
       fileType: fileType,
@@ -93,6 +104,7 @@ export default function HomeInput() {
     });
   };
 
+    if(status === 'loading') return null;
     if(!session) return (
       <div className="flex justify-center gap-4 p-4 items-center">
         <p>Log in to write a post</p>
@@ -101,7 +113,7 @@ export default function HomeInput() {
     );
   return (
     <div className='flex border-b border-gray-200 dark:border-zinc-800 p-3 space-x-3 w-full'>
-        <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={session.user.image} alt={'/no_image_available.jpg'} width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>
+        <Image onClick={() => router.push(`/profile/${session?.user?.uid}`)} src={userInfo?.image} alt='user-img' width={50} height={50} className='rounded-full w-11 h-11 cursor-pointer'/>
         
         <div className='w-full divide-y divide-gray-200 dark:divide-zinc-800'>
           <Textarea className='w-full dark:bg-zinc-900 border-none outline-none tracking-wide min-h-12' placeholder='Whats happening' rows='2' value={text} onChange={(e) => setText(e.target.value)}></Textarea>

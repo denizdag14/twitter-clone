@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { HiHome } from 'react-icons/hi'
 
 export default function AboutMe() {
   return (

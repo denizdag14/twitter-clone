@@ -1,7 +1,7 @@
 "use client"
 
 import { FaSignOutAlt } from 'react-icons/fa'
-import { HiArchive, HiChat, HiHome, HiUser } from 'react-icons/hi'
+import { HiArchive, HiHome, HiUser } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -9,9 +9,30 @@ import SignInOutButton from './SignInOutButton'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import { signOut, signIn } from 'next-auth/react'
 import DarkModeSwitch from './DarkModeSwitch'
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { app } from '@/firebase'
+import { useState, useEffect } from 'react'
 
 export default function BottomNavbar() {
+
+    const db = getFirestore(app);
     const { data: session, status} = useSession();
+    const [userInfo, setUserInfo] = useState(null);
+
+    useEffect(() => {
+      const fetchUserInfo = async () => {
+        if (session?.user?.uid) {
+          const userDoc = await getDoc(doc(db, "users", session?.user?.uid));
+          if (userDoc.exists()) {
+            setUserInfo(userDoc.data());
+          }
+        }
+      };
+  
+      fetchUserInfo();
+    }, [session?.user?.uid]);
+
+    if(status === 'loading') return null;
   return (
     <div className='flex items-center justify-between h-12'>
       <div className='flex items-center justify-between space-x-10'>
@@ -51,7 +72,7 @@ export default function BottomNavbar() {
           <Popover>
               <PopoverButton className='focus:outline-none'>
               <div className='text-sm flex items-center cursor-pointer p-2 border dark:border-zinc-800 rounded-full justify-between hover:bg-gray-100 dark:hover:bg-zinc-800 transition-all duration-200'>
-                <Image className='rounded-full h-10 w-10' src={session.user.image} alt='user-img' width={50} height={50} />
+                <Image className='rounded-full h-10 w-10' src={userInfo?.image} alt='user-img' width={50} height={50} />
               </div>
               </PopoverButton>
               <Transition

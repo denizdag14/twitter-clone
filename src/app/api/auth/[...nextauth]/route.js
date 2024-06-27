@@ -22,6 +22,7 @@ const handler = NextAuth({
                     image: session.user.image,
                     name: session.user.name,
                     email: session.user.email,
+                    bio: '',
                     created_time: serverTimestamp(),
                     username: session.user.email.split('@')[0].toLocaleLowerCase(),
                     uid: token.sub,

@@ -6,15 +6,29 @@ import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/re
 import { HiDotsHorizontal, HiHeart, HiOutlineHeart, HiOutlineTrash } from "react-icons/hi"
 import { useSession, signIn } from "next-auth/react"
 import { app } from "@/firebase"
-import { deleteDoc, doc, getFirestore, onSnapshot, collection, setDoc, serverTimestamp } from "firebase/firestore"
+import { deleteDoc, doc, getFirestore, onSnapshot, collection, setDoc, serverTimestamp, getDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
 
 export default function Comment({comment, commentId, postId, postOwnerId}) {
 
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState([]);
+    const [userInfo, setUserInfo] = useState(null);
     const db = getFirestore(app);
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+          if (comment.uid) {
+            const userDoc = await getDoc(doc(db, "users", comment.uid));
+            if (userDoc.exists()) {
+              setUserInfo(userDoc.data());
+            }
+          }
+        };
+    
+        fetchUserInfo();
+      }, [comment.uid]);
 
     const likePost = async () => {
 
@@ -56,17 +70,19 @@ export default function Comment({comment, commentId, postId, postOwnerId}) {
             }
         }
     };
+    
 
+    if(status === 'loading') return null;
   return (
     <div className="flex p-3 border-b border-gray-200 dark:border-zinc-700 pl-10">
-        <Link className="h-9 w-9 rounded-full mr-2" href={`/profile/${comment?.uid}?username=${comment?.username}`}>
-            <Image className="rounded-full" src={comment?.profileImg} alt="user-img" width={50} height={50} />
+        <Link className="h-9 w-9 rounded-full mr-2" href={`/profile/${comment?.uid}?username=${userInfo?.username}`}>
+            <Image className="rounded-full" src={userInfo?.image} alt="user-img" width={50} height={50} />
         </Link>
         <div className="flex-1">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-1 whitespace-nowrap">
-                    <Link href={`/profile/${comment?.uid}?username=${comment?.username}`} className="font-bold text-sm truncate hover:underline">{comment?.name}</Link>
-                    <Link href={`/profile/${comment?.uid}?username=${comment?.username}`} className="truncate hover:underline text-xs text-gray-500">@{comment?.username}</Link>
+                    <Link href={`/profile/${userInfo?.uid}?username=${userInfo?.username}`} className="font-bold text-sm truncate hover:underline">{userInfo?.name}</Link>
+                    <Link href={`/profile/${userInfo?.uid}?username=${userInfo?.username}`} className="truncate hover:underline text-xs text-gray-500">@{userInfo?.username}</Link>
                 </div>
                 <Popover>
                     <PopoverButton className='focus:outline-none w-6 h-6 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full flex items-center justify-center'>
